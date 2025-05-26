@@ -1,0 +1,30 @@
+name: Tweet at 11:11 AM & PM
+
+on:
+  schedule:
+    - cron: '11 5 * * *'   # 11:11 AM IST (5:11 UTC)
+    - cron: '41 17 * * *'  # 11:11 PM IST (17:41 UTC)
+  workflow_dispatch:
+
+jobs:
+  tweet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Tweepy
+        run: pip install tweepy
+
+      - name: Run bot
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          API_SECRET: ${{ secrets.API_SECRET }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          ACCESS_SECRET: ${{ secrets.ACCESS_SECRET }}
+        run: python bot.py
